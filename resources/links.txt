@@ -1,9 +1,0 @@
-Eric Darve
-----
-https://www.youtube.com/playlist?list=PLAtMgFDMfGy2mysjPHN_d1cf9sR1muRkq
-https://github.com/EricDarve/cme213-spring-2021?tab=readme-ov-file
-
-OpenMP course
-----
-https://www.youtube.com/watch?v=FjCFT5ojQSk
-https://www.youtube.com/watch?v=f1aVTx5g43o
