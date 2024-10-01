@@ -1,0 +1,89 @@
+% Copyright 2019 Clara Eleonore Pavillet
+
+% Author: Clara Eleonore Pavillet
+% Description: This is an unofficial Oxford University Beamer Template I made from scratch. Feel free to use it, modify it, share it.
+% Version: 1.0
+
+\documentclass{beamer}
+\usepackage{pdfpages}
+\input{Packages.tex}
+\usetheme{oxonian}
+\usepackage{wrapfig}
+\usepackage{listings}
+
+\title{Използване на OpenMP - част 4. Tasks.}
+\subtitle{\textit{Курс „Паралелно програмиране“}}
+\titlegraphic{{\includegraphics[width=5.3cm]{iaps.png}}} 
+
+\author{\newline \newline Стоян Мишев}
+
+\vspace{1cm}
+
+\date{} %\today
+
+\begin{document}
+\lstset{language=Python}
+{\setbeamertemplate{footline}{} 
+\frame{\titlepage}}
+
+
+\section*{План}\begin{frame}{План}\tableofcontents\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \frametitle{Свързан списък. Задача.}
+  \centering
+  \includegraphics[width=0.3\textwidth]{while}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Свързан списък. Решение 1.}
+  \centering
+  \includegraphics[width=0.9\textwidth]{solution-naive}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Задачи в OpenMP(tasks)}
+  Обособени единици за изпълнение със собствен код и данни, които се ``вземат'' от различни нишки чрез планировчик (scheduler - internal control variables).
+
+  \centering
+  \includegraphics[width=0.35\textwidth]{task}
+\end{frame}
+
+
+\begin{frame}[plain]
+  \frametitle{Задачи в OpenMP. Fibonacci.}
+  \centering
+  \includegraphics[width=0.35\textwidth]{fib}\pause  
+  \includegraphics[width=0.42\textwidth]{fib1}  
+\end{frame}
+
+
+\begin{frame}[plain]
+  \frametitle{Задачи в OpenMP. Списък.}
+  \centering
+  \includegraphics[width=0.45\textwidth]{task-list}
+\end{frame}
+
+\begin{frame}[plain]
+  \frametitle{Задачи в OpenMP. Списък.}
+  \centering
+  \includegraphics[width=0.55\textwidth]{task-list1}
+  \includegraphics[width=0.65\textwidth]{task-list1-image}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Домашна работа}
+  от \textit{Introduction to OpenMP 14 Module 8} до \textit{Introduction to OpenMP 17 Discussion 7}
+\end{frame}
+
+\end{document}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
+
