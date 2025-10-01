@@ -302,3 +302,5 @@ TSWLatexianTemp*
 
 # ignore some auxiliary course materials
 resources/
+
+*.mp4
