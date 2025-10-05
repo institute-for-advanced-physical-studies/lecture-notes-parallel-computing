@@ -11,7 +11,7 @@
 \usepackage{wrapfig}
 \usepackage{listings}
 
-\title{Използване на OpenMP. Част 2.}
+\title{Използване на OpenMP. Част 2. for, barrier, section, master, single }
 \subtitle{\textit{Курс „Паралелно програмиране“}}
 \titlegraphic{{\includegraphics[width=5.3cm]{iaps.png}}} 
 
@@ -52,10 +52,31 @@
 
 \begin{frame}
   \frametitle{Loop}
-  \centering
-  \includegraphics[width=0.5\textwidth]{for} 
+  Нишките изпълняват итерации с различен номер.
 
+  \centering
+  \includegraphics[width=0.5\textwidth]{for}  \pause
+
+  Съкратен запис:
   \includegraphics[width=0.4\textwidth]{for-short}
+\end{frame}
+
+\begin{frame}[fragile, plain]
+\scriptsize
+\lstset{language=C++}
+\begin{lstlisting}
+  int i = 0;
+  omp_set_num_threads(4);
+
+  printf("Total number of threads allocated in the serial section %d \n", omp_get_num_threads() );
+  #pragma omp parallel 
+  {
+    #pragma omp for
+    for( i  = 0; i < omp_get_num_threads(); i++) {
+      printf("This is run by thread %d, Total threads in the parallel section %d\n", omp_get_thread_num(), omp_get_num_threads());
+    }
+  }
+\end{lstlisting}
 \end{frame}
 
 \begin{frame}
@@ -90,9 +111,83 @@
 
 
 \begin{frame}
+  \frametitle{Section}
+  Нишките изпълняват код от различни \verb+section
+  \centering
+  \includegraphics[width=0.5\textwidth]{section}
+
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Section}
+
+\scriptsize
+\lstset{language=C++}
+\begin{lstlisting}
+int a = 6;
+int b = 3;
+omp_set_num_threads(4);
+#pragma omp parallel
+{
+  #pragma omp sections
+  {
+    #pragma omp section
+    {
+      printf("Sum = %d on thread %d \n", a + b, omp_get_thread_num());
+    }
+    #pragma omp section 
+    {
+      printf("Difference = %d on thread %d \n", a - b, omp_get_thread_num());
+    }
+  }
+}
+\end{lstlisting}
+
+\end{frame}
+
+
+\begin{frame}
   \frametitle{Master}
+
+  Когато искаме някоя част от кода да се изпълни само от една нишка използваме \texttt{master} или \texttt{single}. При \texttt{signle} нишката, която първа достигне до кода, го изпълнява, докото при \texttt{master} точно нишката с \texttt{id=0} изпълнява кода (, а останалите - не). Няма скрит \texttt{barrier} след \texttt{master}, но има скрит \texttt{barrier} след \texttt{single}.
+
   \centering
   \includegraphics[width=0.7\textwidth]{master}
+\end{frame}
+
+
+\begin{frame}[fragile,plain]
+ \scriptsize
+\lstset{language=C++}
+\begin{lstlisting}
+  int i = 0, N = 8;
+  omp_set_num_threads(N);
+  int *a, *b, *c;
+  #pragma omp parallel
+  {
+    #pragma omp master
+    {
+      a = malloc(N * sizeof(int));
+      b = malloc(N * sizeof(int));
+      c = malloc(N * sizeof(int));
+      srand(time(NULL));
+    }
+    #pragma omp for
+    for( i  = 0; i < N; i++) {
+      a[i] = rand() % 10;  
+      b[i] = rand() % 10;
+    }
+    #pragma omp for
+    for( i  = 0; i < N; i++) {
+        c[i] = a[i] * b[i];
+    }
+    #pragma omp for
+    for( i = 0; i < N ; i++) {
+      printf("A[%d] * B[%d] = %d \n", i, i, c[i]);
+    }
+ }
+\end{lstlisting}
 \end{frame}
 
 
@@ -100,6 +195,40 @@
   \frametitle{Single}
   \centering
   \includegraphics[width=0.7\textwidth]{single}
+\end{frame}
+
+
+\begin{frame}[fragile, plain]
+\scriptsize
+\lstset{language=C++}
+\begin{lstlisting}
+  int i = 0, N = 8;
+  omp_set_num_threads(N);
+  int *a, *b, *c;
+  #pragma omp parallel
+  {
+    #pragma omp single
+    {
+      a = malloc(N * sizeof(int));
+      b = malloc(N * sizeof(int));
+      c = malloc(N * sizeof(int));
+      srand(time(NULL));
+    }
+    #pragma omp for
+    for( i  = 0; i < N; i++) {
+      a[i] = rand() % 10;  
+      b[i] = rand() % 10;
+    }
+    #pragma omp for
+    for( i  = 0; i < N; i++) {
+        c[i] = a[i] * b[i];
+    }
+    #pragma omp for
+    for( i = 0; i < N ; i++) {
+      printf("A[%d] * B[%d] = %d \n", i, i, c[i]);
+    }
+  }
+\end{lstlisting}
 \end{frame}
 
 
