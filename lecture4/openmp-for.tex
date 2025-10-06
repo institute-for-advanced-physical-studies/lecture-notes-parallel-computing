@@ -31,22 +31,15 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[plain]{Задача}
-
-  \begin{equation}
-    \int_0^1 \frac{4}{1+x^2} dx = \pi  \nonumber
-  \end{equation}
-\end{frame}
-
 \begin{frame}
-  \frametitle{SPMD <-> Worksharing}
+\frametitle{Теми}
   Loop
 
   Section
 
+  Master
+  
   Single
-
-  Task
 \end{frame}
 
 
@@ -114,8 +107,14 @@
 \end{lstlisting}
 \end{frame}
 
+\begin{frame}[fragile]{Интеграл}
+  \begin{equation}
+    \int_0^1 \frac{4}{1+x^2} dx = \pi  \nonumber
+  \end{equation}
+\end{frame}
+
 \begin{frame}[plain]
-  \frametitle{Integral}
+  \frametitle{Интеграл}
   \centering
   \includegraphics[width=0.6\textwidth]{integral-worksharing}\pause
 
@@ -132,11 +131,9 @@
 
 \begin{frame}
   \frametitle{Section}
-  Нишките изпълняват код от различни \verb+section
+  Нишките изпълняват код от различни \texttt{section}
   \centering
   \includegraphics[width=0.5\textwidth]{section}
-
-
 \end{frame}
 
 \begin{frame}[fragile]
@@ -259,7 +256,6 @@ omp_set_num_threads(4);
 От ``Introduction to OpenMP 08 Discussion 3 ''
  
 до ``Introduction to OpenMP 11 part 1 Module 6''.
-
 \end{frame}
 
 
