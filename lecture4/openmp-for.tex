@@ -58,6 +58,7 @@
   \includegraphics[width=0.5\textwidth]{for}  \pause
 
   Съкратен запис:
+
   \includegraphics[width=0.4\textwidth]{for-short}
 \end{frame}
 
@@ -93,6 +94,25 @@
   \includegraphics[width=0.6\textwidth]{reduction-init}    
 \end{frame}
 
+
+\begin{frame}[fragile, plain]
+\scriptsize
+\lstset{language=C++}
+\begin{lstlisting}
+  int tnumber;
+  int i = 10, j = 10, k = 10;
+  printf("Before parallel region: i=%i, j=%i, k=%i\n", i, j, k);
+#pragma omp parallel default(none) private(tnumber) reduction(+:i) reduction(*:j) reduction(^:k)
+  {
+    tnumber = omp_get_thread_num() + 1;
+    i = tnumber;
+    j = tnumber;
+    k = tnumber;
+    printf("Thread %i: i=%i, j=%i, k=%i\n", tnumber, i, j, k);
+  }
+  printf("After parallel region: i=%d, j=%d, k=%d\n", i, j, k);
+\end{lstlisting}
+\end{frame}
 
 \begin{frame}[plain]
   \frametitle{Integral}
