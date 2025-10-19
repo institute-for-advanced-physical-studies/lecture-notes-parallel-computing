@@ -31,6 +31,8 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\section{Locks}
+
 \begin{frame}[fragile]
   \frametitle{Locks}
 
@@ -80,6 +82,8 @@ omp_num_procs()
   \includegraphics[height=0.7\textheight]{num-procs}
 \end{frame}
 
+\section{Shared, private, firstprivate, lastprivate}
+
 \begin{frame}{Private}
   \includegraphics[height=0.3\textheight]{private}  
   \includegraphics[height=0.3\textheight]{private2}  
@@ -110,6 +114,26 @@ default(private|shared|none)
 \begin{frame}{private изход от паралелен блок}
 \includegraphics[width=0.6\textwidth]{private-init3.png}
 \end{frame}
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+\section{Примери}
+
+
+\begin{frame}[plain]
+  \frametitle{Площ на фрактала на Mandelbrot 1.}
+  \includegraphics[width=1.05\textwidth]{mandelbr0}
+\end{frame}
+
+\begin{frame}[plain]
+  \frametitle{Площ на фрактала на Mandelbrot 2.}
+  \includegraphics[width=1.07\textwidth]{mandelbr1}
+\end{frame}
+
+\begin{frame}[plain]
+  \frametitle{Площ на фрактала на Mandelbrot 3.}
+  \includegraphics[width=1.07\textwidth]{mandelbr2}  
+\end{frame}
+
+%\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 \begin{frame}
   \includegraphics[width=\textwidth]{pi}
@@ -119,7 +143,6 @@ default(private|shared|none)
   \frametitle{Домашна работа}
   от \textit{Introduction to OpenMP 11 part 2 Module 6} до \textit{Introduction to OpenMP 13 Discussion 5}
 
-  Разучаване на примера Mandelbrot
 \end{frame}
 
 \end{document}

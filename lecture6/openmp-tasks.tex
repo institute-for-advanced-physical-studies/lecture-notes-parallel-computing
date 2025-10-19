@@ -35,12 +35,23 @@
   \frametitle{Свързан списък. Задача.}
   \centering
   \includegraphics[width=0.3\textwidth]{while}
+
+  \pause
+
+  При \texttt{for} броят на интерациите е известен по време на компилиране. При \texttt{while} той зависи от условие, което се удовлетворява в процеса на изпълнение на програмата.
 \end{frame}
 
 \begin{frame}
   \frametitle{Свързан списък. Решение 1.}
   \centering
   \includegraphics[width=0.9\textwidth]{solution-naive}
+
+  \begin{itemize}
+  \item цикъл 1. установяне на броя елементи
+  \item цикъл 2. записване на указателите в масив
+  \item цикъл 3. \texttt{pragma omp parallel for}
+  \end{itemize}
+
 \end{frame}
 
 \begin{frame}
@@ -49,6 +60,7 @@
 
   \centering
   \includegraphics[width=0.35\textwidth]{task}
+
 \end{frame}
 
 
@@ -63,6 +75,7 @@
 \begin{frame}[plain]
   \frametitle{Задачи в OpenMP. Списък.}
   \centering
+  \includegraphics[width=0.45\textwidth]{task-list0}
   \includegraphics[width=0.45\textwidth]{task-list}
 \end{frame}
 
