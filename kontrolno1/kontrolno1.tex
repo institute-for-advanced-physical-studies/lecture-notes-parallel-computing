@@ -14,7 +14,7 @@
 
 \title{OpenMP. Контролна работа 1.}
 \subtitle{\textit{Курс „Паралелно програмиране“}}
-\titlegraphic{{\includegraphics[width=5.3cm]{iaps.png}}} 
+%\titlegraphic{{\includegraphics[width=5.3cm]{iaps.png}}} 
 
 \author{\newline \newline Стоян Мишев}
 
@@ -30,31 +30,31 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}
+\begin{frame}[plain]
   \frametitle{Задача}
-  Използвайки разгледания код от последното занятие, както и фрагмента от слайд 9,
-  определете динамиката на системата от частици с данните от
-  \url{https://hpc-old.cineca.it/content/exercise-5-0}. В частност,
-  определете местоположението на частиците след 5 времеви интервала.
 
-  В moodle качете файл с местоположенията на частиците в последния момент, както и написания от Вас код.
-  
-  Помислете дали е нужен \texttt{atomic} при обновяването на \texttt{pos} и \texttt{v}.
+  Нека имаме два вектора \texttt{a} и \texttt{b} с равен брой елементи \texttt{N}>$10^3$. Запълнете векторите с реални числа.
 
-  --
+  Използвайки OpenMP намерете:
 
-  По желание, може да анимирате измененията в местоположенията на частиците.
+  \begin{itemize}
+  \item сумата от елементите на \texttt{a} и \texttt{b};
+  \item тензорното произведение \texttt{C} на \texttt{a} и \texttt{b}:
+    \begin{equation}
+      C = \begin{bmatrix}
+        a_1 b_1       & a_1 b_2  & a_1 b_3 & \dots & a_1 b_N \\
+        a_2 b_1       & a_2 b_2  & a_2 b_3 & \dots & a_2 b_N \\
+        \hdotsfor{5} \\
+        a_N b_1       & a_N b_2  & a_N b_3 & \dots & a_N b_N \\
+      \end{bmatrix};\nonumber
+    \end{equation} 
+  \item сумата от всички елементи на \texttt{C};
+  \item колко нишки използвахте за изчисляването на сумата на елементите на \texttt{C}.
+  \end{itemize}
+В Moodle предавате source кода и изпълнимия (компилиран) файл. Крайният срок е 23:59 на 27.10.2025 г.
 \end{frame}
 
-\begin{frame}{Помощни части от вариант на решение}
-  \includegraphics[width=0.8\textwidth]{help1}
 
-  \includegraphics[width=\textwidth]{help2}
-
-  \includegraphics[width=0.75\textwidth]{help3}
-
-  \includegraphics[width=0.7\textwidth]{help4}
-\end{frame}
 
 \end{document}
 

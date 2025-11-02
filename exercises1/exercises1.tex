@@ -1,0 +1,300 @@
+% Copyright 2019 Clara Eleonore Pavillet
+
+% Author: Clara Eleonore Pavillet
+% Description: This is an unofficial Oxford University Beamer Template I made from scratch. Feel free to use it, modify it, share it.
+% Version: 1.0
+
+\documentclass{beamer}
+\usepackage{pdfpages}
+\input{Packages.tex}
+\usetheme{oxonian}
+\usepackage{wrapfig}
+\usepackage{listings}
+
+\title{Решаване на задачи}
+\subtitle{\textit{Курс „Паралелно програмиране“}}
+\titlegraphic{{\includegraphics[width=5.3cm]{iaps.png}}} 
+
+\author{\newline \newline Стоян Мишев}
+
+\vspace{1cm}
+
+\date{} %\today
+
+\begin{document}
+\lstset{language=Python}
+{\setbeamertemplate{footline}{} 
+\frame{\titlepage}}
+
+
+\section*{План}\begin{frame}{Задачи}\tableofcontents\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Запълване на масив}
+\begin{frame}[fragile,plain]{Запълване на елементи на масив без OpenMP}
+\scriptsize
+\lstset{language=C++}
+\begin{lstlisting}
+  #define TOTAL 2048 // 100000
+  
+    int A[TOTAL];
+    clock_t start, end;
+    double cpu_time_used;
+
+    // Start timing
+    start = clock();
+
+    for (int i = 0; i < TOTAL; ++i)
+    {
+        A[i] = i * i;
+        // Comment out printf to reduce I/O overhead
+        // printf("%02d=%03d\n", i, A[i]);
+    }
+
+    // End timing
+    end = clock();
+    cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
+
+    // Print the execution time
+    printf("Non-OpenMP Execution Time: %f seconds\n", cpu_time_used);
+\end{lstlisting}
+\end{frame}
+ 
+\begin{frame}[fragile,plain]{Запълване на елементи на масив с OpenMP}
+\scriptsize
+\lstset{language=C++}
+\begin{lstlisting}
+#define TOTAL 2048 // 100000
+    int A[TOTAL];
+    double start, end;
+    double cpu_time_used;
+    // Set the number of threads
+    omp_set_num_threads(4);
+    // Start timing
+    start = omp_get_wtime();
+
+#pragma omp parallel for
+    for (int i = 0; i < TOTAL; ++i)
+    {
+        A[i] = i * i;
+        // Comment out printf to reduce I/O overhead
+        // printf("Th[%d]: %02d=%03d\n", omp_get_thread_num(), i, A[i]);
+    }
+    // End timing
+    end = omp_get_wtime();
+    cpu_time_used = end - start;
+\end{lstlisting}    
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Резултати}
+  \underline{N = 2048}
+
+  Non-OpenMP Execution Time: 0.000003 seconds
+
+  OpenMP Execution Time: 0.000102 seconds
+
+  \underline{N = 1000000}
+
+  Non-OpenMP Execution Time: 0.001654 seconds
+
+  OpenMP Execution Time: 0.000623 seconds
+
+\end{frame}
+
+\section{Синхронизиране на нишки с critical}
+
+\begin{frame}[fragile, plain]
+  \frametitle{Синхронизиране на нишки 1/2}
+\scriptsize
+\lstset{language=C++}
+\begin{lstlisting}
+  #define TOTAL 1000
+float funcao_complexa_1(int i) {
+    return (float)(i * 2.0); // Simple function
+}
+float funcao_complexa_2(float B) {
+    return (float)(B + 2.0); // Simple function
+}
+int main() {
+    float res = 0.0; // Shared variable to accumulate results
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile, plain]
+  \frametitle{Синхронизиране на нишки 2/2}
+\scriptsize
+\lstset{language=C++}
+\begin{lstlisting}
+#pragma omp parallel
+    {
+        float B; // Private variable for each thread
+        int i, id, nthreads;
+        id = omp_get_thread_num(); // Get the thread ID
+        nthreads = omp_get_num_threads(); // Get the number of threads
+        // Divide the work among threads
+        for (i = id; i < TOTAL; i += nthreads)
+        {
+            B = funcao_complexa_1(i); // Perform a complex computation
+// Critical section: only one thread can execute this at a time
+#pragma omp critical
+            {
+                res += funcao_complexa_2(B); // Update the shared variable
+            }
+        }
+    }
+
+    // Output the result after parallel computation
+    printf("Result: %f\n", res);
+\end{lstlisting}
+\end{frame}
+
+\section{Reduction}
+\begin{frame}[fragile, plain]
+  \frametitle{Reduction без OpenMP 1/2}
+\scriptsize
+\lstset{language=C++}
+\begin{lstlisting}
+#include <random>
+#include <vector>
+
+static void baseline() {
+  // Create a random number generator
+  std::random_device rd;
+  std::mt19937 mt(rd());
+  std::uniform_real_distribution dist(0.0f, 1.0f);
+
+  // Create vectors of random numbers
+  const int num_elements = 1 << 20;
+  std::vector<float> v_in;
+  std::generate_n(std::back_inserter(v_in), num_elements, [&]{return dist(mt);});
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile, plain]
+  \frametitle{Reduction без OpenMP 2/2}
+\scriptsize
+\lstset{language=C++}
+\begin{lstlisting}
+  // Timing loop
+  for (auto _ : s) {
+    // Create our variable to accumulate into
+    float sink = 0;
+    
+    // Run the sum of squares
+    for (int i = 0; i < num_elements; i++) {
+      // Square v_in and add to sink
+      sink += v_in[i] * v_in[i];
+    }
+  }
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile, plain]
+  \frametitle{Reduction с OpenMP 1/2}
+\scriptsize
+\lstset{language=C++}
+\begin{lstlisting}
+  #include <random>
+#include <vector>
+
+static void baseline() {
+  // Create a random number generator
+  std::random_device rd;
+  std::mt19937 mt(rd());
+  std::uniform_real_distribution dist(0.0f, 1.0f);
+
+  // Create vectors of random numbers
+  const int num_elements = 1 << 20;
+  std::vector<float> v_in;
+  std::generate_n(std::back_inserter(v_in), num_elements, [&]{return dist(mt);});
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile, plain]
+  \frametitle{Reduction с OpenMP 2/2}
+\scriptsize
+\lstset{language=C++}
+\begin{lstlisting}
+  // Timing loop
+  for (auto _ : s) {
+    // Create our variable to accumulate into
+    float sink = 0;
+    
+    // Run the sum of squares
+    // Parallelize the for loop
+    #pragma omp parallel for reduction(+:sink)
+    for (int i = 0; i < num_elements; i++) {
+      // Square v_in and add to sink
+      sink += v_in[i] * v_in[i];
+    }
+  }
+}
+\end{lstlisting}
+\end{frame}
+
+\section{Master и Single}
+
+\begin{frame}[fragile, plain]
+  \frametitle{master}
+\scriptsize
+\lstset{language=C++}
+\begin{lstlisting}
+#include <stdio.h>
+#include <omp.h>
+
+int main(void)
+{    
+    #pragma omp parallel
+    {
+        #pragma omp master
+        {
+            printf("Thread %d is executing master construct\n", omp_get_thread_num());
+        }
+        printf("Thread %d is executing non-master construct\n", omp_get_thread_num());
+    }
+
+    return 0;
+}
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile, plain]
+  \frametitle{single}
+\scriptsize
+\lstset{language=C++}
+\begin{lstlisting}
+#include <stdio.h>
+#include <omp.h>
+
+int main(void)
+{    
+    #pragma omp parallel
+    {
+        #pragma omp single
+        {
+            printf("Thread %d is executing single construct\n", omp_get_thread_num());
+        }
+        printf("Thread %d is executing non-single construct\n", omp_get_thread_num());
+    }
+
+    return 0;
+}
+\end{lstlisting}
+\end{frame}
+
+
+
+\end{document}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
+

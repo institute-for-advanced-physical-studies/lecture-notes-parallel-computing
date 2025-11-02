@@ -56,7 +56,7 @@
 
 \begin{frame}
   \frametitle{Задачи в OpenMP(tasks)}
-  Обособени единици за изпълнение със собствен код и данни, които се ``вземат'' от различни нишки чрез планировчик (scheduler - internal control variables).
+  Обособени единици за изпълнение със собствен код и данни, които се ``вземат'' от различни нишки чрез планировчик (scheduler - internal control variables). Въведени в OpenMP 3.0.
 
   \centering
   \includegraphics[width=0.35\textwidth]{task}
@@ -84,6 +84,14 @@
   \centering
   \includegraphics[width=0.55\textwidth]{task-list1}
   \includegraphics[width=0.65\textwidth]{task-list1-image}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Разлика между task и section}
+  \emph{``OpenMP’s section can be thought of as a static number of blocks of code to be executed in parallel. By static, I mean the number of blocks is to be fixed and known at compile time. On the other hand, task can be thought of as a way to break down into a dynamic number of blocks to be executed in parallel. By dynamic, I mean the number of blocks is not determined at compile time and depends on runtime.''}
+
+  \url{https://medium.com/@techhara/openmp-section-vs-task-495b479ef317}
 \end{frame}
 
 
